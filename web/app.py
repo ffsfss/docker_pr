@@ -9,7 +9,7 @@ db_host = os.environ.get("DB_HOST", "localhost")
 db_name = os.environ.get("POSTGRES_DB", "testdb")
 db_user = os.environ.get("POSTGRES_USER", "user")
 db_pass = os.environ.get("POSTGRES_PASSWORD", "password")
-db_port = os.environ.get("DB_PORT", "6666")
+db_port = os.environ.get("DB_PORT", "5432")
 
 def get_db_connection():
     conn = psycopg2.connect(
@@ -46,16 +46,6 @@ def health_check():
         return jsonify({"status": "healthy", "database": "connected"})
     except Exception as e:
         return jsonify({"status": "unhealthy", "database": "disconnected", "error": str(e)}), 500
-
-@app.route('/debug')
-def debug():
-    return jsonify({
-        "db_host": os.environ.get("DB_HOST"),
-        "db_name": os.environ.get("POSTGRES_DB"), 
-        "db_user": os.environ.get("POSTGRES_USER"),
-        "db_port": os.environ.get("DB_PORT"),
-        "message": "Timeless try"
-    })
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=False)
